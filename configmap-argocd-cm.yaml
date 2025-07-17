@@ -3,11 +3,7 @@ data:
   # remember to define each cluster with the label console
   resource.links: |
     - title: Resource in OpenShift's UI
-      url: >-
-        https://
-        {{- .cluster.annotations.console_url -}}/k8s/ns/
-        {{- .resource.metadata.namespace -}}/deployments/
-        {{- .resource.metadata.name -}}
+      url: {{ replace "https://api.oscp-dev.mamdas.iaf:6443" "https://api." "https://console.apps." }}
       if: resource.kind == "Deployment"
     - title: Resource in OpenShift's UI
       url: >-
