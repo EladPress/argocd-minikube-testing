@@ -1,21 +1,19 @@
 apiVersion: v1
 data:
   # remember to define each cluster with the label console
-  resource.links: |
-    - title: Resource in OpenShift's UI
+  resource.links: | 
+    - title: Resource in OpenShift's UI {{- .resource.kind -}}
       url: >-
         https://
         {{- .cluster.annotations.console_url -}}/k8s/ns/
-        {{- .resource.metadata.namespace -}}/deployments/
+        {{- .resource.metadata.namespace -}}/{{ .resource.kind | lower }}s/
         {{- .resource.metadata.name -}}
-      if: resource.kind == "Deployment"
-    - title: Resource in OpenShift's UI
-      url: >-
-        https://
-        {{- .cluster.annotations.console_url -}}/k8s/ns/
-        {{- .resource.metadata.namespace -}}/services/
-        {{- .resource.metadata.name -}}
-      if: resource.kind == "Service"
+      if: |
+        resource.kind == "Deployment" || 
+        resource.kind == "Service" || 
+        resource.kind == "PersistentVolumeClaim" || 
+        resource.kind == "Pod" || 
+        resource.kind == "ServiceAccount"
   resource.customizations.ignoreResourceUpdates.ConfigMap: |
     jqPathExpressions:
       # Ignore the cluster-autoscaler status
